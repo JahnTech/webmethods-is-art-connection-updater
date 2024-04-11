@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="IS_CORE"/>
+	<classpathentry kind="var" path="IS_SERVER"/>
+	<classpathentry kind="var" path="IS_CLIENT"/>
+	<classpathentry kind="var" path="IS_MAIL"/>
+	<classpathentry kind="var" path="IS_JAVAX_XMLSOAP"/>
+	<classpathentry kind="var" path="WEBMETHODS_HOME/common/lib/wm-acdl-common.jar"/>
+	<classpathentry kind="var" path="WEBMETHODS_HOME/common/lib/ext/commons-codec.jar"/>
+	<classpathentry kind="var" path="WEBMETHODS_HOME/common/lib/wm-scg-security.jar"/>
+	<classpathentry kind="var" path="WEBMETHODS_HOME/common/lib/wm-scg-core.jar"/>
+	<classpathentry kind="var" path="WEBMETHODS_HOME/common/lib/wm-g11nutils.jar"/>
+	<classpathentry kind="var" path="WEBMETHODS_HOME/common/lib/ext/activation.jar"/>
+	<classpathentry kind="var" path="WEBMETHODS_HOME/common/lib/wm-scg-audit.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

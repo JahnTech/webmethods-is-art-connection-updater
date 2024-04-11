@@ -1,0 +1,164 @@
+<?xml version="1.0"?>
+<!-- 
+
+ (c) Copyright 2024 JahnTech, Inhaber Christoph Jahn, Darmstadt, Germany.
+ https://jahntech.com
+
+ SPDX-License-Identifier: Apache-2.0
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+-->
+
+<project name="webMethods-IntegrationServer-ART-Connection-Updater" default="dist" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless">
+
+	<property file="build.properties" />
+
+	<property environment="env" />
+
+	<!-- GLOBAL PROPERTY SETTINGS -->
+
+	<property name="src.dir" location="src" />
+	<property name="classes.dir" location="classes" />
+	<property name="build.dir" location="build" />
+	<property name="dist.dir" location="dist" />
+	<property name="resources.dir" location="resources" />
+
+	<tstamp>
+		<format property="jar.build.date" pattern="yyyy-MM-dd" />
+	</tstamp>
+
+	<property name="base.file.name" value="webm-is-art-connection-update" />
+	<property name="jar.file.name" value="${base.file.name}.jar" />
+	<property name="dist.file.name" value="${base.file.name}_${version.number}.zip" />
+
+
+	<condition property="isEnvVar">
+		<isset property="env.WEBMETHODS_HOME" />
+	</condition>
+
+	<condition property="isWindows">
+		<and>
+			<not>
+				<isset property="env.WEBMETHODS_HOME" />
+			</not>
+			<os family="windows" />
+		</and>
+	</condition>
+
+	<condition property="isUnix">
+		<and>
+			<not>
+				<isset property="env.WEBMETHODS_HOME" />
+			</not>
+			<os family="unix" />
+		</and>
+	</condition>
+
+	<target name="setEnvVarRoot" if="isEnvVar">
+		<property name="webMethods.home" location="${env.WEBMETHODS_HOME}" />
+		<echo message="Environment variable WEBMETHODS_HOME is defined, setting to ${webMethods.home}" />
+	</target>
+
+	<target name="setWindowsRoot" if="isWindows">
+		<property name="webMethods.home" location="C:\SoftwareAG" />
+		<echo message="OS is Windows and environment variable WEBMETHODS_HOME is not defined, setting to default ${webMethods.home}" />
+	</target>
+
+	<target name="setUnixRoot" if="isUnix">
+		<property name="webMethods.home" location="/opt/softwareag" />
+		<echo message="OS is Linux/Unix and environment variable WEBMETHODS_HOME is not defined, setting to default ${webMethods.home}" />
+	</target>
+
+	<target name="getWebmHome" depends="setEnvVarRoot, setWindowsRoot, setUnixRoot">
+	</target>
+
+	<target name="init" depends="getWebmHome">
+		<mkdir dir="${classes.dir}" />
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${dist.dir}" />
+	</target>
+
+	<target name="compile" depends="init">
+		<path id="classpath.webMethods">
+			<fileset dir="${webMethods.home}/IntegrationServer/lib">
+				<include name="wm-isserver.jar" />
+			</fileset>
+			<fileset dir="${webMethods.home}/common/lib">
+				<include name="wm-isclient.jar" />
+				<include name="wm-acdl-common.jar" />
+				<include name="wm-scg-security.jar" />
+				<include name="wm-scg-core.jar" />
+				<include name="wm-g11nutils.jar" />
+				<include name="wm-scg-audit.jar" />
+			</fileset>
+
+			<fileset dir="${webMethods.home}/common/lib/ext">
+				<include name="activation.jar" />
+				<include name="commons-codec.jar" />
+			</fileset>
+
+			<fileset dir="${webMethods.home}/common/lib/glassfish">
+				<include name="gf.jakarta.mail.jar" />
+				<include name="gf.webservices-api-osgi.jar" />
+			</fileset>
+		</path>
+
+		<path id="classpath.project">
+			<fileset dir="${basedir}/jars">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true">
+			<classpath refid="classpath.webMethods" />
+			<!-- <classpath refid="classpath.project" /> -->
+		</javac>
+	</target>
+
+	<target name="clean" description="remove the build dir">
+		<delete dir="${classes.dir}" quiet="true" />
+		<delete dir="${build.dir}" quiet="true" />
+		<delete dir="${dist.dir}" quiet="true" />
+	</target>
+
+	<target name="createJar" description="Create a jar for the project" depends="compile">
+		<jar destfile="${build.dir}/${jar.file.name}">
+			<fileset dir="${classes.dir}" includes="**/*.class" />
+			<fileset dir="${src.dir}" includes="**/*.xml" />
+			<metainf dir="${basedir}">
+				<include name="LICENSE" />
+			</metainf>
+			<manifest>
+				<attribute name="Built-By" value="JahnTech, Inhaber Christoph Jahn" />
+				<attribute name="Signature-Version" value="${version.number} ${jar.build.date}" />
+
+			</manifest>
+		</jar>
+	</target>
+
+	<!-- ================================= 
+          target: dist  
+                      
+         ================================= -->
+	<target name="dist" depends="createJar" description="Build distribution">
+		<zip destfile="${dist.dir}/${dist.file.name}">
+			<fileset dir="${build.dir}" includes="${jar.file.name}" />
+			<fileset dir="${resources.dir}" includes="*.*" />
+			<fileset dir="${basedir}" includes="LICENSE" />
+			<fileset dir="${basedir}" includes="README.md" />
+		</zip>
+	</target>
+
+
+</project>
