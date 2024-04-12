@@ -32,6 +32,13 @@ Therefore a separate instance of PassMan is initiated and the
 password updated. Hence the need to restart IS after such
 change.
 
+If you dont' want to store an unencrypted password in the changes
+file, you can encrypted it. Either use the
+
+- service `wm.server.configurationvariables:encryptData` from the
+  `WmRoot` package, or
+- the Java class `com.webmethods.deployer.common.cipher.CipherUtil`.
+
 
 ## Installation
 
