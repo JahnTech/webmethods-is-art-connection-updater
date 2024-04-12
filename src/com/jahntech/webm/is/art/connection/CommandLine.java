@@ -29,20 +29,37 @@ import java.util.Properties;
  */
 public class CommandLine {
 
+	/**
+	 * Project URL to be displayed at program invocation
+	 */
 	public static final String URL_PROJECT_HOME = "https://github.com/JahnTech/webmethods-is-art-connection-updater";
 
-	public static final String KEY_NAMESPACE = "namespace";
+	/**
+	 * Key used for setting new password. Since, in contrast to all other values the
+	 * actual password is not stored in the node.ndf file, this is used to ensure
+	 * the required special handling.
+	 */
 	public static final String KEY_PASSWORD = "connectionProperties.password";
 
+	/**
+	 * Main orchestration logic
+	 * 
+	 * @param args Directory for node.ndf, connection namespace, and file with
+	 *             changes
+	 */
 	public static void main(String[] args) {
 
 		System.out.println("Updater for webMethods Integration Server ART adapter connections");
 		System.out.println("  Copyright 2024 by JahnTech, Inh. Christoph Jahn (info@jahntech.com)");
 		System.out.println("  For project details go to " + URL_PROJECT_HOME);
 
-		// The program relies on the environment variable WEBMETHODS_HOME set
+		// The program relies on the environment variable WEBMETHODS_HOME set.
+		// Alternatively it is also possible to provide a system property with
+		// the same name.
 		String wmHome = getWmHome();
 
+		// Current directory is only displayed for possible debug situations,
+		// it has no impact on the execution of the program
 		String currentDir = System.getProperty("user.dir");
 		System.out.println("  Current dir = " + currentDir);
 
@@ -100,10 +117,28 @@ public class CommandLine {
 		}
 	}
 
+	/**
+	 * Get location of webMethods installation, also known as WEBMETHODS_HOME.
+	 * First, the System properties are checked for this key. If nothing is
+	 * specified here, as a second step an environment variable of the same name is
+	 * looked for.
+	 * 
+	 * The following checks will be performed:
+	 * <ul>
+	 * <li>Null value</li>
+	 * <li>Empty string</li>
+	 * <li>Directory exists</li>
+	 * <li>Directory contains sub-directory"IntegrationServer/config"</li>
+	 * </ul>
+	 * Failure of a test results an exception and execution will be terminated.
+	 * 
+	 * @return Location of the webMethods installation
+	 */
 	private static String getWmHome() {
 		String wmHome = System.getProperty("WEBMETHODS_HOME");
-		
+
 		if (wmHome == null || wmHome.equals("")) {
+			System.out.println("  Checking environment variables for WEBMETHODS_HOME");
 			wmHome = System.getenv("WEBMETHODS_HOME");
 		} else {
 			System.out.println("  WEBMETHODS_HOME provided as System property");
@@ -119,14 +154,14 @@ public class CommandLine {
 		// File system checks
 		File wmHomeDir = new File(wmHome);
 		if (!wmHomeDir.exists()) {
-			throw new IllegalStateException("Environment variable WEBMETHODS_HOME points to '"
+			throw new IllegalArgumentException("Environment variable WEBMETHODS_HOME points to '"
 					+ FileUtils.getCanonicalPathWithFallback(wmHomeDir) + "' which does not exist");
 		}
 
 		// IntegrationServer installed?
 		File isRootDir = new File(wmHomeDir, "IntegrationServer/config");
 		if (!isRootDir.exists()) {
-			throw new IllegalStateException("Environment variable WEBMETHODS_HOME points to '"
+			throw new IllegalArgumentException("Environment variable WEBMETHODS_HOME points to '"
 					+ FileUtils.getCanonicalPathWithFallback(wmHomeDir)
 					+ "' which does not contain an installation of IntegrationServer");
 		}

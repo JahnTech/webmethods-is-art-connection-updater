@@ -70,6 +70,13 @@ public class ConnectionDetails {
 
 	}
 
+	/**
+	 * Get value of setting
+	 * 
+	 * @param path Path leading to the setting, with elements separated by a single
+	 *             dot (".")
+	 * @return Current value
+	 */
 	public String getSetting(String path) {
 		throwExceptionOnEmptyPath(path);
 
@@ -86,8 +93,14 @@ public class ConnectionDetails {
 	}
 
 	/**
-	 * @param path
-	 * @return
+	 * Traverse the settings path and return the last "group" (typically
+	 * "connectionProperties" or "connectionManagerProperties") of the settings from
+	 * node.ndf as an {@link IDataMap} so that values can be accessed. Example: If
+	 * the path is "connectionProperties.serverName", the returned object will be
+	 * "connectionManagerProperties".
+	 * 
+	 * @param path Path to traverse node.ndf settings
+	 * @return Map with "last" level
 	 */
 	private IDataMap getIDataMapForLastPathElement(String path) {
 		String[] pathParts = path.split("\\.");
@@ -107,8 +120,12 @@ public class ConnectionDetails {
 	}
 
 	/**
-	 * @param path
-	 * @return
+	 * Traverse the settings path and return the last part of it. Example: If the
+	 * path is "connectionProperties.serverName", the returned value will be
+	 * "serverName".
+	 * 
+	 * @param path Path to traverse node.ndf settings
+	 * @return Name of value in {@link IData} from node.ndf file
 	 */
 	private String getLastPathElement(String path) {
 		String[] pathParts = path.split("\\.");
@@ -116,6 +133,9 @@ public class ConnectionDetails {
 	}
 
 	/**
+	 * Check if path is neither null nor an empty string. In either case an
+	 * exception will be thrown.
+	 * 
 	 * @param path
 	 */
 	private void throwExceptionOnEmptyPath(String path) {
@@ -127,7 +147,9 @@ public class ConnectionDetails {
 	}
 
 	/**
-	 * Perform actual update, but check for prior existence of key
+	 * Perform actual update, but check for prior existence of key. This avoids hard
+	 * detect run-time errors, because no new and (at best) ignored configuration
+	 * values can be introduced by mistake.
 	 * 
 	 * @param map   Map into which the update should be performed
 	 * @param key   Key to be updated

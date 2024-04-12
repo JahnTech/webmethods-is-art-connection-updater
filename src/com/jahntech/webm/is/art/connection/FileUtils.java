@@ -22,6 +22,9 @@ package com.jahntech.webm.is.art.connection;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Utility class with various helper methods.
+ */
 public class FileUtils {
 
 	/**

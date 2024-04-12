@@ -17,7 +17,6 @@
  * the License.
  */
 
-
 package com.jahntech.webm.is.art.connection;
 
 import java.io.File;
@@ -34,6 +33,10 @@ import com.wm.app.b2b.server.util.security.OPMConfig;
 import com.wm.passman.PasswordManagerException;
 import com.wm.util.security.WmSecureString;
 
+/**
+ * Handler for password updates that works against the built-in password manager
+ * of Integration Sever.
+ */
 public class PasswordHandler {
 
 	private static final String KEY_FILE_NAME = "fileName";
@@ -43,6 +46,15 @@ public class PasswordHandler {
 	File integrationServerRootDir;
 	private String passwordHandle;
 
+	/**
+	 * Initialize the Integration Sever's built-in password manager for out-of-band
+	 * access
+	 * 
+	 * @param integrationServerRootDir Root directory of Integration Server
+	 * @param connectionNamespace      Namespace of the ART connection
+	 * @throws PasswordManagerException
+	 * @throws InterruptedException
+	 */
 	public PasswordHandler(File integrationServerRootDir, String connectionNamespace)
 			throws PasswordManagerException, InterruptedException {
 		this.integrationServerRootDir = integrationServerRootDir;
@@ -53,8 +65,12 @@ public class PasswordHandler {
 			throw new IllegalArgumentException("The specified Integration Server root directory does not exist");
 		} else {
 
+			// Use Resources class to get configuration directory via API. Will unlikely to
+			// change any time soon, this seems cleaner than hard-coding it.
 			Resources resources = new Resources(integrationServerRootDir, false);
 
+			// Retrieve PassMan configuration. Effectively this gets the contents of
+			// passman.cnf
 			OPMConfig opmCfg = new OPMConfig(resources.getConfigDir());
 			PassManConfig pmCfg = opmCfg.asPassManConfig();
 
@@ -63,6 +79,8 @@ public class PasswordHandler {
 			// known.
 			makePathsAbsolute(pmCfg);
 
+			// Initialize the actual PassMan instance with the updated (absolute paths)
+			// configuration
 			PassMan pm = PassManFactory.create(pmCfg);
 			OutboundPasswordManager.init((PasswordManager) pm);
 		}
@@ -72,20 +90,40 @@ public class PasswordHandler {
 
 	}
 
+	/**
+	 * Paths in the configuration file for PassMan are relative. When used from
+	 * within Integration Server that makes sense, because everything is in a known
+	 * location from the perspective of the invoking code. But this tool can be run
+	 * from an arbitrary location. It is therefore necessary to make the paths for
+	 * the data store file and the master password file absolute before initializing
+	 * this PassMan instance.
+	 * 
+	 * @param in PassMan configuration as read from passman.cnf
+	 */
 	private void makePathsAbsolute(PassManConfig in) {
 		makeFileNamePathAbsolute(in.getDataStoreParams());
 		makeFileNamePathAbsolute(in.getMasterPasswordParams());
 	}
 
-	
-	private Map<String, String> makeFileNamePathAbsolute(Map<String, String> in) {
+	/**
+	 * Make configured file name an absolute path
+	 * 
+	 * @param in Map with data store or master password settings
+	 */
+	private void makeFileNamePathAbsolute(Map<String, String> in) {
 		String relPath = in.get(KEY_FILE_NAME);
 		File file = new File(integrationServerRootDir, relPath);
 		String absolutePath = FileUtils.getCanonicalPathWithFallback(file);
 		in.put(KEY_FILE_NAME, absolutePath);
-		return in;
 	}
 
+	/**
+	 * Update connection password. New value can be provided in clear-text or AES
+	 * encrypted via the existing official tool.
+	 * 
+	 * @param password New password value
+	 * @throws Exception
+	 */
 	public void setPassword(String password) throws Exception {
 
 		WmSecureString passwordSec;
@@ -99,6 +137,11 @@ public class PasswordHandler {
 
 	}
 
+	/**
+	 * Get current password for connection
+	 * 
+	 * @return password
+	 */
 	public WmSecureString getPassword() {
 		try {
 			return OutboundPasswordManager.retrievePassword(passwordHandle);
