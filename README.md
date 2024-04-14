@@ -48,7 +48,9 @@ and `$IS_HOME/config/WORK-txnPassStore.dat` .
 
 ## Installation
 
-Unzip the release ZIP file into a directory of your choice.
+Download the latest release ZIP
+[from here](https://github.com/JahnTech/webmethods-is-art-connection-updater/releases)
+and unzip file into a directory of your choice.
 There is no requirement to use a particular directory.
 
 ## Usage
