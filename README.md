@@ -37,8 +37,14 @@ file, you can encrypted it. Either use the
 
 - service `wm.server.configurationvariables:encryptData` from the
   `WmRoot` package, or
-- the Java class `com.webmethods.deployer.common.cipher.CipherUtil`.
+- the Java class `com.webmethods.deployer.common.cipher.CipherUtil` .
 
+Please note that the tools makes use of non-public APIs. You should
+therefore test it carefully. It is also recommended to create backups
+of the files that are changed. In addition to the `node.ndf` that
+contains the connection details, this also means the data store files
+for PassMan. You can find them at `$IS_HOME/config/txnPassStore.dat`
+and `$IS_HOME/config/WORK-txnPassStore.dat` .
 
 ## Installation
 
@@ -59,28 +65,34 @@ If webMethods was installed into a custom location, the environment
 variable `WEBMETHODS_HOME` must be specified for the script to
 work properly.
 
-On systems where a more elaborate configuration exists, those
-specifics are taken into account. Therefore the following environment
-variables are used:
+For Java the following applies, if the `JAVA_HOME` environment
+variable is not defined:
 
-- `WEBMETHODS_HOME`: Installation location of the webMethods Suite.
-  Must be specified, if the installation was performed to a non-default
-  location.
-- `JAVA_HOME`:
-  - On Linux only and if it is not set, the script uses the contents of
-    `/etc/profile.d/jdk.sh` if it exists.
-  - If not defined, the JVM that comes with the webMethods Suite will
-    be used (depends on name of JVM folder and may therefore not work on all
-    versions of the webMethods Suite).
+- On Linux only, the script uses the contents of
+  `/etc/profile.d/jdk.sh` if that exists. In that case the next
+  point is skipped.
+- On Windows and Linux, the JVM that comes with the webMethods Suite will
+  be used.
+
+  _Note_: In the past the name of the JVM folder has been changed. The scripts
+  may therefore not work on all future versions of the webMethods Suite.
+  If this situation occurs, please search for "checked for Java" in the scripts.
+  The line below that comment contains all places that are checked for a
+  Java installation within webMethods. You can then simply add the new one here.
 
 ## Parameters
 
 The behavior is controlled by command line parameters. The syntax is
 
 ```bash
-./webm-is-art-connection-update.{sh|bat} <DIRECTORY_WITH_CONNECTION_NODE_NDF> \
-                                         <CONNECTION_NAMESPACE> \
-                                         <PROPERTY_FILE_WITH_CHANGES>
+webm-is-art-connection-update.{sh|bat} <DIRECTORY_WITH_CONNECTION_NODE_NDF> \
+                                       <CONNECTION_NAMESPACE> \
+                                       <PROPERTY_FILE_WITH_CHANGES>
+```
+
+On Linux you may need to enable the execution bit for the script via
+```bash
+chmod 755 webm-is-art-connection-update.sh
 ```
 
 The ZIP release archives contain a sample file for the connection settings

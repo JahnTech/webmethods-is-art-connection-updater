@@ -75,6 +75,7 @@ if [ -z "$WEBMETHODS_HOME" ] ; then
 fi
 
 
+# The locations (separated by space) that will be checked for Java
 CHECK_JAVA_INSTALLATIONS="$WEBMETHODS_HOME/jvm/jvm $WEBMETHODS_HOME/jvm/jvm180_64 $WEBMETHODS_HOME/jvm/jvm180_32 $WEBMETHODS_HOME/jvm/jvm180"
 CHECK_JAVA_PROFILE="/etc/profile.d/jdk.sh"
 
