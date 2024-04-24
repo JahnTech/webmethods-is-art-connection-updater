@@ -2,3 +2,4 @@ bin
 build
 classes
 dist
+tmp

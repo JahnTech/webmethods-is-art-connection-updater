@@ -33,6 +33,8 @@
 	<property name="build.dir" location="build" />
 	<property name="dist.dir" location="dist" />
 	<property name="resources.dir" location="resources" />
+	<property name="ant.tmpdir" location="tmp" />
+	
 
 	<tstamp>
 		<format property="jar.build.date" pattern="yyyy-MM-dd" />
@@ -87,6 +89,7 @@
 		<mkdir dir="${classes.dir}" />
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${dist.dir}" />
+		<mkdir dir="${ant.tmpdir}" />
 	</target>
 
 	<target name="compile" depends="init">
@@ -130,6 +133,7 @@
 		<delete dir="${classes.dir}" quiet="true" />
 		<delete dir="${build.dir}" quiet="true" />
 		<delete dir="${dist.dir}" quiet="true" />
+		<delete dir="${ant.tmpdir}" quiet="true" />
 	</target>
 
 	<target name="createJar" description="Create a jar for the project" depends="compile">
