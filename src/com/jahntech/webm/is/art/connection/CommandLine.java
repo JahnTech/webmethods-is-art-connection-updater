@@ -159,7 +159,7 @@ public class CommandLine {
 		}
 
 		// IntegrationServer installed?
-		File isRootDir = new File(wmHomeDir, "IntegrationServer/config");
+		File isRootDir = new File(wmHomeDir, "IntegrationServer");
 		if (!isRootDir.exists()) {
 			throw new IllegalArgumentException("Environment variable WEBMETHODS_HOME points to '"
 					+ FileUtils.getCanonicalPathWithFallback(wmHomeDir)
