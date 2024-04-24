@@ -2,7 +2,9 @@
 
 The job of the JahnTech ART connection update (JTACU) 
 is to change settings of adapter connections, like a the hostname
-of the database server, credentials, etc.
+of the database server, credentials, etc. This also includes
+the connection pool settings. It is also possible to disable
+a connection before bringing up Integration Server.
 
 The change of the settings happens purely on disk and does not
 require a running Integration Server (IS). In fact, if such a change is
@@ -39,7 +41,7 @@ file, you can encrypted it. Either use the
   `WmRoot` package, or
 - the Java class `com.webmethods.deployer.common.cipher.CipherUtil` .
 
-Please note that the tools makes use of non-public APIs. You should
+Please note that the tool makes use of non-public APIs. You should
 therefore test it carefully. It is also recommended to create backups
 of the files that are changed. In addition to the `node.ndf` that
 contains the connection details, this also means the data store files
@@ -88,7 +90,7 @@ The behavior is controlled by command line parameters. The syntax is
 
 ```bash
 webm-is-art-connection-update.{sh|bat} <DIRECTORY_WITH_CONNECTION_NODE_NDF> \
-                                       <CONNECTION_NAMESPACE> \
+                                       <CONNECTION_ALIAS> \
                                        <PROPERTY_FILE_WITH_CHANGES>
 ```
 

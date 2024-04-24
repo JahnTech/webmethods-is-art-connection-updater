@@ -27,7 +27,7 @@ rem
 rem   SYNOPSIS
 rem  
 rem       webm-is-art-connection-update.bat <DIRECTORY_WITH_CONNECTION_NODE_NDF>
-rem                                         <CONNECTION_NAMESPACE>
+rem                                         <CONNECTION_ALIAS>
 rem                                         <PROPERTY_FILE_WITH_CHANGES>
 rem  
 rem  

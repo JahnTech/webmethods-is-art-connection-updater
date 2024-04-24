@@ -72,8 +72,8 @@ public class CommandLine {
 				System.out.println("Working on connection details from directory '"
 						+ FileUtils.getCanonicalPathWithFallback(nodeNdfDir) + "'");
 
-				String connNamespace = args[1];
-				System.out.println("Namespace of connection = " + connNamespace);
+				String connAlias = args[1];
+				System.out.println("Connection alias = " + connAlias);
 
 				File changePropsFile = new File(args[2]);
 				System.out.println(
@@ -96,7 +96,7 @@ public class CommandLine {
 						System.out.println("  New value : " + value);
 						conDetails.updateSetting(key, value);
 					} else {
-						PasswordHandler pwh = new PasswordHandler(new File(wmHome, "IntegrationServer"), connNamespace);
+						PasswordHandler pwh = new PasswordHandler(new File(wmHome, "IntegrationServer"), connAlias);
 						pwh.setPassword(value);
 					}
 				}

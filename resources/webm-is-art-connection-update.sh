@@ -26,7 +26,7 @@
 # SYNOPSIS
 #
 #     webm-is-art-connection-update.sh  <DIRECTORY_WITH_CONNECTION_NODE_NDF>
-#                                       <CONNECTION_NAMESPACE>
+#                                       <CONNECTION_ALIAS>
 #                                       <PROPERTY_FILE_WITH_CHANGES>
 #
 #

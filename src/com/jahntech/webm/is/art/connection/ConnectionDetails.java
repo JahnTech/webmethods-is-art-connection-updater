@@ -36,7 +36,7 @@ public class ConnectionDetails {
 	 * those connection details, please use
 	 * {@link ConnectionFile#getConnectionDetails()} .
 	 * 
-	 * @param details Connecion details
+	 * @param details Connection details
 	 */
 	public ConnectionDetails(IData details) {
 		this.details = details;
