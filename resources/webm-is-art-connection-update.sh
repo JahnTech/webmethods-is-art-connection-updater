@@ -123,6 +123,7 @@ PATH_LIB_GF_MAIL=$PATH_WM_LIBS/glassfish/gf.jakarta.mail.jar
 PATH_LIB_GF_SOAP=$PATH_WM_LIBS/glassfish/gf.webservices-api-osgi.jar
 PATH_LIB_PASSMAN=$PATH_WM_LIBS/wm-acdl-common.jar:$PATH_WM_LIBS/wm-scg-security.jar:$PATH_WM_LIBS/wm-scg-core.jar:$PATH_WM_LIBS/wm-g11nutils.jar:$PATH_WM_LIBS/wm-scg-audit.jar:$PATH_WM_LIBS/ext/activation.jar:$PATH_WM_LIBS/ext/commons-codec.jar
 
-CLASSPATH="webm-is-art-connection-update.jar:$PATH_LIB_IS_SERVER:$PATH_LIB_IS_CLIENT:$PATH_LIB_GF_MAIL:$PATH_LIB_GF_SOAP:$PATH_LIB_PASSMAN"
+SCRIPT_PATH=`dirname "$(realpath $0)"`
+CLASSPATH="$SCRIPT_PATH/webm-is-art-connection-update.jar:$PATH_LIB_IS_SERVER:$PATH_LIB_IS_CLIENT:$PATH_LIB_GF_MAIL:$PATH_LIB_GF_SOAP:$PATH_LIB_PASSMAN"
 
 java -classpath "$CLASSPATH" -DWEBMETHODS_HOME="$WEBMETHODS_HOME" com.jahntech.webm.is.art.connection.CommandLine $1 $2 $3
