@@ -152,6 +152,7 @@
                       
          ================================= -->
 	<target name="dist" depends="createJar" description="Build distribution">
+		<fixcrlf srcdir="${resources.dir}" includes="**/*.sh" eol="lf" eof="remove" />
 		<zip destfile="${dist.dir}/${dist.file.name}">
 			<fileset dir="${build.dir}" includes="${jar.file.name}" />
 			<fileset dir="${resources.dir}" includes="*.*" />
