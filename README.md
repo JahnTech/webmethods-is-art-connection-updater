@@ -21,6 +21,8 @@ The primary use-case is deployment into a new environment type,
 creation of a container image, or start-up of a new container
 instance.
 
+[![Watch the video](https://img.youtube.com/vi/841fooatLkI/hqdefault.jpg)](https://youtu.be/841fooatLkI)
+
 ## How It Works
 
 The program reads the entire adapter connection from the `node.ndf`
