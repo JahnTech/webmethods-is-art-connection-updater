@@ -104,6 +104,12 @@ chmod 755 webm-is-art-connection-update.sh
 The ZIP release archives contain a sample file for the connection settings
 (`sample-change.conf`). Please make a copy and use this as a starting point.
 
+## Building from source
+
+Here is a video to demonstrate how to build the tool from the source code
+
+[![Watch the video](https://img.youtube.com/vi/kbcKyHhzZSs/hqdefault.jpg)](https://youtu.be/kbcKyHhzZSs)
+
 ______________________
 This tool is provided as-is and without warranty or support. Users are free
 to use, fork and modify it, subject to the license agreement.
