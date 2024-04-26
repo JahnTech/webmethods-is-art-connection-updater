@@ -53,11 +53,6 @@ public class CommandLine {
 		System.out.println("  Copyright 2024 by JahnTech, Inh. Christoph Jahn (info@jahntech.com)");
 		System.out.println("  For project details go to " + URL_PROJECT_HOME);
 
-		// The program relies on the environment variable WEBMETHODS_HOME set.
-		// Alternatively it is also possible to provide a system property with
-		// the same name.
-		String wmHome = getWmHome();
-
 		// Current directory is only displayed for possible debug situations,
 		// it has no impact on the execution of the program
 		String currentDir = System.getProperty("user.dir");
@@ -96,7 +91,7 @@ public class CommandLine {
 						System.out.println("  New value : " + value);
 						conDetails.updateSetting(key, value);
 					} else {
-						PasswordHandler pwh = new PasswordHandler(new File(wmHome, "IntegrationServer"), connAlias);
+						PasswordHandler pwh = new PasswordHandler(getIsHome(), connAlias);
 						pwh.setPassword(value);
 					}
 				}
@@ -118,6 +113,18 @@ public class CommandLine {
 	}
 
 	/**
+	 * Return Home of Integration Server. This location is different between
+	 * Microservices Runtime and Integration Server classic. In case of the latter,
+	 * the directory of the default instance will be returned.
+	 * 
+	 * @return location of Integration Server
+	 */
+	private static File getIsHome() {
+		IntegrationServerHome isHome = new IntegrationServerHome(getWmHome());
+		return isHome.get();
+	}
+
+	/**
 	 * Get location of webMethods installation, also known as WEBMETHODS_HOME.
 	 * First, the System properties are checked for this key. If nothing is
 	 * specified here, as a second step an environment variable of the same name is
@@ -128,13 +135,12 @@ public class CommandLine {
 	 * <li>Null value</li>
 	 * <li>Empty string</li>
 	 * <li>Directory exists</li>
-	 * <li>Directory contains sub-directory"IntegrationServer/config"</li>
 	 * </ul>
 	 * Failure of a test results an exception and execution will be terminated.
 	 * 
 	 * @return Location of the webMethods installation
 	 */
-	private static String getWmHome() {
+	private static File getWmHome() {
 		String wmHome = System.getProperty("WEBMETHODS_HOME");
 
 		if (wmHome == null || wmHome.equals("")) {
@@ -154,20 +160,12 @@ public class CommandLine {
 		// File system checks
 		File wmHomeDir = new File(wmHome);
 		if (!wmHomeDir.exists()) {
-			throw new IllegalArgumentException("Environment variable WEBMETHODS_HOME points to '"
+			throw new IllegalArgumentException("Location for WEBMETHODS_HOME points to '"
 					+ FileUtils.getCanonicalPathWithFallback(wmHomeDir) + "' which does not exist");
 		}
 
-		// IntegrationServer installed?
-		File isRootDir = new File(wmHomeDir, "IntegrationServer");
-		if (!isRootDir.exists()) {
-			throw new IllegalArgumentException("Location for WEBMETHODS_HOME points to '"
-					+ FileUtils.getCanonicalPathWithFallback(wmHomeDir)
-					+ "' which does not contain an installation of IntegrationServer");
-		}
-
-		System.out.println("  WEBMETHODS_HOME = " + wmHome);
-		return wmHome;
+		System.out.println("  WEBMETHODS_HOME = " + FileUtils.getCanonicalPathWithFallback(wmHomeDir));
+		return wmHomeDir;
 	}
 
 }
