@@ -51,11 +51,11 @@ public class PasswordHandler {
 	 * access
 	 * 
 	 * @param integrationServerRootDir Root directory of Integration Server
-	 * @param connectionNamespace      Namespace of the ART connection
+	 * @param connectionAlias          Alias of the ART connection
 	 * @throws PasswordManagerException
 	 * @throws InterruptedException
 	 */
-	public PasswordHandler(File integrationServerRootDir, String connectionNamespace)
+	public PasswordHandler(File integrationServerRootDir, String connectionAlias)
 			throws PasswordManagerException, InterruptedException {
 		this.integrationServerRootDir = integrationServerRootDir;
 
@@ -85,7 +85,7 @@ public class PasswordHandler {
 			OutboundPasswordManager.init((PasswordManager) pm);
 		}
 
-		passwordHandle = PASSMAN_ART_PREFIX + connectionNamespace;
+		passwordHandle = PASSMAN_ART_PREFIX + connectionAlias;
 		System.out.println("Changing password for handle : " + passwordHandle);
 
 	}
@@ -134,7 +134,6 @@ public class PasswordHandler {
 		}
 		boolean success = OutboundPasswordManager.storePassword(passwordHandle, passwordSec);
 		System.out.println("  Success of setting password = " + success);
-
 	}
 
 	/**
