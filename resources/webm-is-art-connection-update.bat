@@ -26,7 +26,7 @@ rem
 rem  
 rem   SYNOPSIS
 rem  
-rem       webm-is-art-connection-update.bat <DIRECTORY_WITH_CONNECTION_NODE_NDF>
+rem       webm-is-art-connection-update.bat <PACKAGE_NAME>
 rem                                         <CONNECTION_ALIAS>
 rem                                         <PROPERTY_FILE_WITH_CHANGES>
 rem  
@@ -127,7 +127,7 @@ goto end
 :help
 echo Command line parameters are missing.
 echo Usage:
-echo "webm-is-art-connection-update.bat <DIRECTORY_WITH_CONNECTION_NODE_NDF_FILE> <CONNECTION_NAMESPACE> <PROPERTY_FILE_WITH_CHANGES>"
+echo "webm-is-art-connection-update.bat <PACKAGE_NAME> <CONNECTION_ALIAS> <PROPERTY_FILE_WITH_CHANGES>"
 
 
 :end

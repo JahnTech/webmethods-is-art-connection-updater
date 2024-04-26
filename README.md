@@ -91,7 +91,7 @@ variable is not defined:
 The behavior is controlled by command line parameters. The syntax is
 
 ```bash
-webm-is-art-connection-update.{sh|bat} <DIRECTORY_WITH_CONNECTION_NODE_NDF> \
+webm-is-art-connection-update.{sh|bat} <PACKAGE_NAME> \
                                        <CONNECTION_ALIAS> \
                                        <PROPERTY_FILE_WITH_CHANGES>
 ```

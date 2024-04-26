@@ -63,12 +63,10 @@ public class CommandLine {
 		try {
 
 			if (args.length == 3) {
-				String nodeNdfDirStr = args[0];
-
-				File nodeNdfDir = new File(nodeNdfDirStr);
-				System.out.println("Working on connection details from directory '"
-						+ FileUtils.getCanonicalPathWithFallback(nodeNdfDir) + "'");
-
+				
+				String packageName = args[0];
+				System.out.println("Package name = " + packageName);
+				
 				String connAlias = args[1];
 				System.out.println("Connection alias = " + connAlias);
 
@@ -76,6 +74,10 @@ public class CommandLine {
 				System.out.println(
 						"Reading changes from file '" + FileUtils.getCanonicalPathWithFallback(changePropsFile) + "'");
 
+				ConnectionDirectory connDir = new ConnectionDirectory(isHome, packageName, connAlias);
+				File nodeNdfDir = connDir.getDir();
+				System.out.println("Changing connection details in directory " + FileUtils.getCanonicalPathWithFallback(nodeNdfDir));
+				
 				ConnectionFile conFile = new ConnectionFile(nodeNdfDir);
 				ConnectionDetails conDetails = new ConnectionDetails(conFile.getConnectionDetails());
 
@@ -106,7 +108,7 @@ public class CommandLine {
 
 			} else {
 				System.err.println(
-						"Wrong number of command line arguments: Provide (1) path to directory where the adapter connection is stored, (2) the connection alias, and (3) path to file that contains the changes");
+						"Wrong number of command line arguments: Provide (1) package name where the adapter connection is stored, (2) the connection alias, and (3) path to file that contains the changes");
 				System.exit(1);
 			}
 		} catch (Exception e) {
