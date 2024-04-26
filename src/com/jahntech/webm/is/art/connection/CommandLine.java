@@ -57,6 +57,8 @@ public class CommandLine {
 		// it has no impact on the execution of the program
 		String currentDir = System.getProperty("user.dir");
 		System.out.println("  Current dir = " + currentDir);
+		
+		File isHome = getIsHome();
 
 		try {
 
@@ -91,7 +93,7 @@ public class CommandLine {
 						System.out.println("  New value : " + value);
 						conDetails.updateSetting(key, value);
 					} else {
-						PasswordHandler pwh = new PasswordHandler(getIsHome(), connAlias);
+						PasswordHandler pwh = new PasswordHandler(isHome, connAlias);
 						pwh.setPassword(value);
 					}
 				}
@@ -104,7 +106,7 @@ public class CommandLine {
 
 			} else {
 				System.err.println(
-						"Wrong number of command line arguments: Provide (1) path to directory where the adapter connection is stored, and (2) path to file that contains the changes");
+						"Wrong number of command line arguments: Provide (1) path to directory where the adapter connection is stored, (2) the connection alias, and (3) path to file that contains the changes");
 				System.exit(1);
 			}
 		} catch (Exception e) {
@@ -121,7 +123,9 @@ public class CommandLine {
 	 */
 	private static File getIsHome() {
 		IntegrationServerHome isHome = new IntegrationServerHome(getWmHome());
-		return isHome.get();
+		File out = isHome.get();
+		System.out.println("  IS_HOME = " + FileUtils.getCanonicalPathWithFallback(out));
+		return out;
 	}
 
 	/**
